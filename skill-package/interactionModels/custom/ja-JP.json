@@ -1,0 +1,49 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "ジーピーティー",
+      "types": [
+        {
+          "name": "ANY",
+          "values": [
+            {
+              "name": {
+                "value": "あいうえお"
+              }
+            }
+          ]
+        }
+      ],
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "slots": [
+            {
+              "name": "any",
+              "type": "ANY"
+            }
+          ],
+          "name": "GPTIntent",
+          "samples": [
+            "{any}"
+          ]
+        }
+      ]
+    }
+  }
+}
