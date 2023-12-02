@@ -58,7 +58,7 @@ const GPTIntentHandler = {
     const openaiClient = new OpenAI({ apiKey });
 
     const response = await openaiClient.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo", // gpt-4 is slow, so use gpt-3.5-turbo
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: prompt },
