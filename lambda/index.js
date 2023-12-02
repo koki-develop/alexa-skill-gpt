@@ -1,6 +1,4 @@
 const Alexa = require("ask-sdk-core");
-const { OpenAI } = require("openai");
-const { getValue } = require("./lib/db");
 const { askAI } = require("./lib/openai");
 
 const LaunchRequestHandler = {
