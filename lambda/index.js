@@ -1,5 +1,6 @@
 const Alexa = require("ask-sdk-core");
 const { askAI } = require("./lib/openai");
+const { speak } = require("./lib/alexa");
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -8,12 +9,8 @@ const LaunchRequestHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "こんにちは！何かご質問がありますか？";
-
-    return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
-      .getResponse();
+    const output = "こんにちは！何かご質問がありますか？";
+    return speak(handlerInput, output, { reprompt: true });
   },
 };
 
@@ -61,11 +58,7 @@ const GPTIntentHandler = {
     handlerInput.attributesManager.setSessionAttributes(attributes);
     console.log("saved messages:", JSON.stringify(attributes.messages));
 
-    // speak output
-    return handlerInput.responseBuilder
-      .speak(output)
-      .reprompt(output)
-      .getResponse();
+    return speak(handlerInput, output, { reprompt: true });
   },
 };
 
@@ -77,12 +70,8 @@ const HelpIntentHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "何か聞きたいことを話しかけてください。";
-
-    return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
-      .getResponse();
+    const output = "何か聞きたいことを話しかけてください。";
+    return speak(handlerInput, output, { reprompt: true });
   },
 };
 
@@ -97,9 +86,8 @@ const CancelAndStopIntentHandler = {
     );
   },
   handle(handlerInput) {
-    const speakOutput = "何か必要になった際は、いつでもお声がけください！";
-
-    return handlerInput.responseBuilder.speak(speakOutput).getResponse();
+    const output = "何か必要になった際は、いつでもお声がけください！";
+    return speak(handlerInput, output);
   },
 };
 /* *
@@ -119,10 +107,7 @@ const FallbackIntentHandler = {
     const speakOutput =
       "すみません、よくわかりませんでした。もう一度お願いします。";
 
-    return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
-      .getResponse();
+    return speak(handlerInput, speakOutput, { reprompt: true });
   },
 };
 /* *
@@ -138,11 +123,12 @@ const SessionEndedRequestHandler = {
     );
   },
   handle(handlerInput) {
+    const speakOutput = "何か必要になった際は、いつでもお声がけください！";
     console.log(
       `~~~~ Session ended: ${JSON.stringify(handlerInput.requestEnvelope)}`,
     );
     // Any cleanup logic goes here.
-    return handlerInput.responseBuilder.getResponse(); // notice we send an empty response
+    return speak(handlerInput, speakOutput);
   },
 };
 /* *
@@ -158,14 +144,9 @@ const IntentReflectorHandler = {
   },
   handle(handlerInput) {
     const intentName = Alexa.getIntentName(handlerInput.requestEnvelope);
-    const speakOutput = `You just triggered ${intentName}`;
+    const output = `You just triggered ${intentName}`;
 
-    return (
-      handlerInput.responseBuilder
-        .speak(speakOutput)
-        //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
-        .getResponse()
-    );
+    return speak(handlerInput, output);
   },
 };
 /**
@@ -178,14 +159,10 @@ const ErrorHandler = {
     return true;
   },
   handle(handlerInput, error) {
-    const speakOutput =
-      "すみません、よくわかりませんでした。もう一度お願いします。";
+    const output = "すみません、よくわかりませんでした。もう一度お願いします。";
     console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
-    return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt(speakOutput)
-      .getResponse();
+    return speak(handlerInput, output, { reprompt: true });
   },
 };
 
