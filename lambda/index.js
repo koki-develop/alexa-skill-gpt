@@ -52,22 +52,37 @@ const GPTIntentHandler = {
     );
   },
   async handle(handlerInput) {
+    console.log("GPTIntentHandler");
+
     const prompt = handlerInput.requestEnvelope.request.intent.slots.any.value;
+    console.log("prompt:", prompt);
 
     const apiKey = await getValue("OPENAI_API_KEY");
     const openaiClient = new OpenAI({ apiKey });
+
+    // get previous messages
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+    const messages = attributes.messages || [];
+    console.log("previous messages:", JSON.stringify(messages));
 
     const response = await openaiClient.chat.completions.create({
       model: "gpt-3.5-turbo", // gpt-4 is slow, so use gpt-3.5-turbo
       messages: [
         { role: "system", content: systemPrompt },
+        ...messages,
         { role: "user", content: prompt },
       ],
       max_tokens: 500,
     });
-
     const output = response.choices[0].message.content;
-    return handlerInput.responseBuilder.speak(output).getResponse();
+
+    // save messages
+    attributes.messages = [...messages, { role: "user", content: prompt }, { role: "assistant", content: output }];
+    handlerInput.attributesManager.setSessionAttributes(attributes);
+    console.log("saved messages:", JSON.stringify(attributes.messages));
+
+    // speak output
+    return handlerInput.responseBuilder.speak(output).reprompt(output).getResponse();
   },
 };
 
