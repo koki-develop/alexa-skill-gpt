@@ -24,7 +24,7 @@ const LaunchRequestHandler = {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
   },
   handle(handlerInput) {
-    const speakOutput = 'こんにちは！何かご質問がありますか？お手伝いできることがあれば、どうぞお知らせください。';
+    const speakOutput = 'こんにちは！何かご質問がありますか？';
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -77,7 +77,7 @@ const HelpIntentHandler = {
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speakOutput = 'You can say hello to me! How can I help?';
+    const speakOutput = '何か聞きたいことを話しかけてください。';
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -93,7 +93,7 @@ const CancelAndStopIntentHandler = {
         || Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.StopIntent');
   },
   handle(handlerInput) {
-    const speakOutput = 'Goodbye!';
+    const speakOutput = '何か必要になった際は、いつでもお声がけください！';
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -111,7 +111,7 @@ const FallbackIntentHandler = {
       && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.FallbackIntent';
   },
   handle(handlerInput) {
-    const speakOutput = 'Sorry, I don\'t know about that. Please try again.';
+    const speakOutput = 'すみません、よくわかりませんでした。もう一度お願いします。';
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
@@ -163,7 +163,7 @@ const ErrorHandler = {
     return true;
   },
   handle(handlerInput, error) {
-    const speakOutput = 'Sorry, I had trouble doing what you asked. Please try again.';
+    const speakOutput = 'すみません、よくわかりませんでした。もう一度お願いします。';
     console.log(`~~~~ Error handled: ${JSON.stringify(error)}`);
 
     return handlerInput.responseBuilder
